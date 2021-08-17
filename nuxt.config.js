@@ -22,8 +22,11 @@ export default {
 
   image:{
     domains:[
-      'https://links.papareact.com'
+      'links.papareact.com'
     ],
+    alias:{
+      papareact: "https://links.papareact.com"
+    }
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
