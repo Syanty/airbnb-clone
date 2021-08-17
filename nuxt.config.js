@@ -25,7 +25,7 @@ export default {
       'links.papareact.com'
     ],
     alias:{
-      papareact: process.env.BASE_URL
+      papareact: "https://links.papareact.com"
     }
   },
 
@@ -54,7 +54,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: process.env.BASE_URL
+    baseURL: "https://links.papareact.com"
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
