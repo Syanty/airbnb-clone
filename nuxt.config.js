@@ -22,7 +22,7 @@ export default {
 
   image:{
     domains:[
-      'links.papareact.com'
+      'https://links.papareact.com'
     ],
   },
 
