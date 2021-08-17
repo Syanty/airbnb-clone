@@ -18,7 +18,7 @@
   >
     <!-- left -->
     <div class="relative h-16 w-16">
-      <nuxt-img :src="place.img" class="rounded-lg" />
+      <img :src="place.img" class="rounded-lg">
     </div>
 
     <!-- right -->

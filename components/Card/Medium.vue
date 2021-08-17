@@ -10,7 +10,7 @@
     "
   >
     <div class="relative h-80 w-80">
-      <nuxt-img :src="live.img" class="rounded-xl h-full w-full"></nuxt-img>
+      <img :src="live.img" class="rounded-xl h-full w-full">
     </div>
     <h3 class="text-2xl mt-3">{{ live.title }}</h3>
   </div>

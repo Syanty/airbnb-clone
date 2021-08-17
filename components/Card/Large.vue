@@ -1,10 +1,9 @@
 <template>
   <section class="relative py-16 cursor-pointer">
     <div class="relative h-96 min-w-[300px]">
-      <nuxt-img
+      <img
         :src="`https://links.papareact.com/${largeCardItem.img}`"
-        fit="cover"
-        class="rounded-2xl h-full w-full"
+        class="rounded-2xl h-full w-full object-cover"
       />
     </div>
     <div class="absolute top-32 left-12">

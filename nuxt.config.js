@@ -20,15 +20,6 @@ export default {
   css: [
   ],
 
-  image:{
-    domains:[
-      'links.papareact.com'
-    ],
-    alias:{
-      papareact: "https://links.papareact.com"
-    }
-  },
-
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
   ],
@@ -48,8 +39,6 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    //nuxt images
-    '@nuxt/image',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
