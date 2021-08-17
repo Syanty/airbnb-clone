@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    header.scrolled{
+        @apply bg-white shadow-md text-gray-500 transform transition duration-500;
+    }
+}
