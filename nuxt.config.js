@@ -20,11 +20,11 @@ export default {
   css: [
   ],
 
-  image: {
-    domains: [
+  image:{
+    domains:[
       'links.papareact.com'
     ],
-    alias: {
+    alias:{
       papareact: "https://links.papareact.com"
     }
   },
@@ -42,16 +42,14 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    ['@nuxt/image', {
-      provider: 'static',
-      dir: "assets/images",
-    }],
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    //nuxt images
+    '@nuxt/image',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

@@ -41,7 +41,7 @@
 
     <!-- left -->
     <div class="h-10 flex items-center relative cursor-pointer my-auto">
-      <nuxt-img src="/papareact/qd3" fit="contain" class="h-full" />
+      <nuxt-img src="https://links.papareact.com/qd3" fit="contain" class="h-full" />
     </div>
     <!-- middle -->
 

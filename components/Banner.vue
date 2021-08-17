@@ -10,7 +10,7 @@
       xl:h-[700px]
     "
   >
-    <nuxt-img src="/papareact/0fm" fit="cover" class="w-full" />
+    <nuxt-img src="https://links.papareact.com/0fm" fit="cover" class="w-full" />
     <div class="absolute top-1/2 w-full transform -translate-y-1/2 text-center">
       <p class="text-sm sm:text-lg">Not sure where to go? Perfect.</p>
       <button
