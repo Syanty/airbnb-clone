@@ -22,13 +22,16 @@
         <p class="button">More Filters</p>
       </div>
 
-      <div class="flex flex-col mb-5" v-if="!$fetchState.pending">
+      <div class="flex flex-col mb-5">
         <card-info
           v-for="info in searchResult"
           :key="info.title"
           :info="info"
         ></card-info>
       </div>
+    </section>
+    <section class="hidden xl:inline-flex xl:min-w-[500px]">
+      <Map :searchResult="searchResult"/>
     </section>
   </main>
 </template>

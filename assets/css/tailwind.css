@@ -4,7 +4,7 @@
 
 @layer base{
     header.scrolled{
-        @apply bg-white shadow-md text-gray-500 transform transition duration-500;
+        @apply bg-white shadow-md text-gray-500 transform transition duration-200 ease-out;
     }
 }
 @layer components{

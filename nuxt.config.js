@@ -18,12 +18,13 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '~/assets/css/main.css'
+    '~/assets/css/main.css',
+    '~/assets/css/mapbox.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-
+    { src: '~/plugins/vuemapbox', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -43,6 +44,9 @@ export default {
     '@nuxtjs/axios',
   ],
 
+  env: {
+    mapbox_key: "pk.eyJ1IjoiaWFtc2FudHkiLCJhIjoiY2tzaGcydWo2MXRzbTJ2b2Q4ZXZnaTg5ayJ9.Q4UAWGgMINrgBnqxHWvbKg"
+  },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: "https://links.papareact.com"

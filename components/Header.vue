@@ -161,64 +161,66 @@
       :class="!view.atTopOfPage ? 'visible' : 'hidden'"
       class="col-span-3 flex flex-col mx-auto"
     >
-      <date-range-picker
-        v-model="dateRange"
-        :min-date="new Date()"
-        ref="picker"
-      >
-        <!--    date slot-->
-        <template #date="data">
-          <span class="small">{{ data.date | dateCell }}</span>
-        </template>
-        <!--    ranges (new slot syntax) -->
-        <template #ranges="ranges">
-          <div class="ranges">
-            <ul>
-              <li
-                v-for="(range, name) in ranges.ranges"
-                :key="name"
-                @click="ranges.clickRange(range)"
-              >
-                <b>{{ name }}</b>
-                <small class="text-muted"
-                  >{{ range[0].toDateString() }} -
-                  {{ range[1].toDateString() }}</small
+      <no-ssr>
+        <date-range-picker
+          v-model="dateRange"
+          :min-date="new Date()"
+          ref="picker"
+        >
+          <!--    date slot-->
+          <template #date="data">
+            <span class="small">{{ data.date | dateCell }}</span>
+          </template>
+          <!--    ranges (new slot syntax) -->
+          <template #ranges="ranges">
+            <div class="ranges">
+              <ul>
+                <li
+                  v-for="(range, name) in ranges.ranges"
+                  :key="name"
+                  @click="ranges.clickRange(range)"
                 >
-              </li>
-            </ul>
-          </div>
-        </template>
-        <!--    footer slot-->
-        <div slot="footer" class="mb-4">
-          <div class="flex items-center border-b mb-4 p-2">
-            <h2 class="text-2xl flex-grow font-semibold">Number of Guests</h2>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+                  <b>{{ name }}</b>
+                  <small class="text-muted"
+                    >{{ range[0].toDateString() }} -
+                    {{ range[1].toDateString() }}</small
+                  >
+                </li>
+              </ul>
+            </div>
+          </template>
+          <!--    footer slot-->
+          <div slot="footer" class="mb-4">
+            <div class="flex items-center border-b mb-4 p-2">
+              <h2 class="text-2xl flex-grow font-semibold">Number of Guests</h2>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+                />
+              </svg>
+              <input
+                type="number"
+                class="pl-2 w-12 text-lg text-red-400 outline-none"
+                v-model="noOfGuests"
+                :min="1"
               />
-            </svg>
-            <input
-              type="number"
-              class="pl-2 w-12 text-lg text-red-400 outline-none"
-              v-model="noOfGuests"
-              :min="1"
-            />
+            </div>
+            <div class="flex">
+              <button @click="searchInput = ''" class="flex-grow text-gray-500">
+                Cancel
+              </button>
+              <button class="flex-grow text-red-400" @click="search">
+                Search
+              </button>
+            </div>
           </div>
-          <div class="flex">
-            <button @click="searchInput = ''" class="flex-grow text-gray-500">
-              Cancel
-            </button>
-            <button class="flex-grow text-red-400" @click="search">
-              Search
-            </button>
-          </div>
-        </div>
-      </date-range-picker>
+        </date-range-picker>
+      </no-ssr>
     </div>
   </header>
 </template>
