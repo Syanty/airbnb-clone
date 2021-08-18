@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <Header />
+  <div class="h-screen">
+    <Header :view="view" />
     <Nuxt />
     <Footer />
   </div>
@@ -13,6 +13,25 @@ export default {
         class: 'debug-screens',
       },
     }
+  },
+  data() {
+    return {
+      view: {
+        atTopOfPage: true,
+      },
+    }
+  },
+  beforeMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  methods: {
+    handleScroll() {
+      if (window.pageYOffset > 0) {
+        this.view.atTopOfPage = false
+      } else {
+        this.view.atTopOfPage = true
+      }
+    },
   },
 }
 </script>

@@ -1,47 +1,17 @@
 <template>
   <header
     :class="{ scrolled: !view.atTopOfPage }"
-    class="fixed top-0 z-50 w-full grid grid-cols-3 p-5 md:px-10 text-white"
+    class="fixed top-0 z-50 w-full grid grid-cols-3 p-5 md:px-10 text-gray-500"
   >
-    <div
-      :class="view.atTopOfPage ? 'invisible md:visible' : 'hidden'"
-      class="absolute flex flex-col top-24 w-full"
-    >
-      <div
-        :class="view.atTopOfPage ? ' lg:hidden flex' : 'hidden'"
-        class="justify-center space-x-4 p-2 items-center"
-      >
-        <h3 class="min-w-max p-2">Places to stay</h3>
-        <h3 class="min-w-max p-2">Experiences</h3>
-        <h3 class="min-w-max p-2">Online Experiences</h3>
-      </div>
-      <div
-        class="
-          bg-white
-          rounded-full
-          h-20
-          w-9/12
-          mx-auto
-          grid grid-cols-4
-          p-2
-          space-x-4
-          text-black
-        "
-      >
-        <div
-          class="p-2 px-3 hover:rounded-full hover:bg-gray-200 cursor-pointer"
-          v-for="item in items"
-          :key="item.title"
-        >
-          <h3>{{ item.title }}</h3>
-          <p class="text-gray-400">{{ item.description }}</p>
-        </div>
-      </div>
-    </div>
-
     <!-- left -->
-    <div class="h-10 flex items-center relative cursor-pointer my-auto">
-      <img src="https://links.papareact.com/qd3" class="h-full object-contain" />
+    <div
+      class="h-10 flex items-center relative cursor-pointer my-auto"
+      @click="$router.push('/')"
+    >
+      <img
+        src="https://links.papareact.com/qd3"
+        class="h-full object-contain"
+      />
     </div>
     <!-- middle -->
 
@@ -60,7 +30,9 @@
     >
       <input
         type="text"
-        placeholder="Start your search"
+        v-model="searchInput"
+        @input="$refs.picker.togglePicker(true)"
+        :placeholder="placeholder"
         class="
           pl-5
           bg-transparent
@@ -68,8 +40,12 @@
           font-medium
           focus:outline-none
           flex-grow
-          placeholder-black
+          placeholder-gray-400
           cursor-pointer
+          transition
+          duration-200
+          ease-out
+          overflow-hidden
         "
       />
       <svg
@@ -110,7 +86,7 @@
       <p
         class="
           hidden
-          md:inline
+          lg:inline
           cursor-pointer
           font-medium
           min-w-max
@@ -179,45 +155,130 @@
         </svg>
       </div>
     </div>
+
+    <div
+      v-show="searchInput"
+      :class="!view.atTopOfPage ? 'visible' : 'hidden'"
+      class="col-span-3 flex flex-col mx-auto"
+    >
+      <date-range-picker
+        v-model="dateRange"
+        :min-date="new Date()"
+        ref="picker"
+      >
+        <!--    date slot-->
+        <template #date="data">
+          <span class="small">{{ data.date | dateCell }}</span>
+        </template>
+        <!--    ranges (new slot syntax) -->
+        <template #ranges="ranges">
+          <div class="ranges">
+            <ul>
+              <li
+                v-for="(range, name) in ranges.ranges"
+                :key="name"
+                @click="ranges.clickRange(range)"
+              >
+                <b>{{ name }}</b>
+                <small class="text-muted"
+                  >{{ range[0].toDateString() }} -
+                  {{ range[1].toDateString() }}</small
+                >
+              </li>
+            </ul>
+          </div>
+        </template>
+        <!--    footer slot-->
+        <div slot="footer" class="mb-4">
+          <div class="flex items-center border-b mb-4 p-2">
+            <h2 class="text-2xl flex-grow font-semibold">Number of Guests</h2>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+              />
+            </svg>
+            <input
+              type="number"
+              class="pl-2 w-12 text-lg text-red-400 outline-none"
+              v-model="noOfGuests"
+              :min="1"
+            />
+          </div>
+          <div class="flex">
+            <button @click="searchInput = ''" class="flex-grow text-gray-500">
+              Cancel
+            </button>
+            <button class="flex-grow text-red-400" @click="search">
+              Search
+            </button>
+          </div>
+        </div>
+      </date-range-picker>
+    </div>
   </header>
 </template>
 <script>
+import DateRangePicker from 'vue2-daterange-picker'
+/* you need to import the CSS manually */
+import 'vue2-daterange-picker/dist/vue2-daterange-picker.css'
+import { format } from 'date-fns'
 export default {
+  props: ['view'],
+  components: { DateRangePicker },
   data() {
+    const startDate = new Date()
+    const endDate = new Date()
+    endDate.setDate(endDate.getDate() + 6)
+
     return {
-      view: {
-        atTopOfPage: true,
-      },
-      items: [
-        {
-          title: 'Location',
-          description: 'Where are you going?',
-        },
-        {
-          title: 'Check In',
-          description: 'Add Dates',
-        },
-        {
-          title: 'Check Out',
-          description: 'Add Dates',
-        },
-        {
-          title: 'Guests',
-          description: 'Add Guests',
-        },
-      ],
+      placeholder: 'Start your Search',
+      dateRange: { startDate, endDate },
+      searchInput: '',
+      noOfGuests: 1,
     }
   },
-  beforeMount() {
-    window.addEventListener('scroll', this.handleScroll)
+  filters: {
+    dateCell(value) {
+      const dt = new Date(value)
+
+      return dt.getDate()
+    },
+    date(val) {
+      return val ? val.toLocaleString() : ''
+    },
   },
   methods: {
-    handleScroll() {
-      if (window.pageYOffset > 0) {
-        this.view.atTopOfPage = false
-      } else {
-        this.view.atTopOfPage = true
+    search() {
+      const searchQuery = {
+        location: this.searchInput,
+        startDate: this.dateRange.startDate.toISOString(),
+        endDate: this.dateRange.endDate.toISOString(),
+        noOfGuests: this.noOfGuests,
       }
+
+      const formatedStartDate = format(
+        new Date(searchQuery.startDate),
+        'dd MMMM yy'
+      )
+      const formatedEndDate = format(
+        new Date(searchQuery.endDate),
+        'dd MMMM yy'
+      )
+
+      const range = `${formatedStartDate} - ${formatedEndDate}`
+
+      this.searchInput = ''
+      this.placeholder = `${searchQuery.location} | ${range} | ${searchQuery.noOfGuests} guests`
+
+      this.$router.push({
+        path: 'search',
+        query: searchQuery,
+      })
     },
   },
 }

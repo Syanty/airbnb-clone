@@ -7,3 +7,18 @@
         @apply bg-white shadow-md text-gray-500 transform transition duration-500;
     }
 }
+@layer components{
+    .button{
+        @apply px-4 py-2
+        border
+        rounded-full
+        cursor-pointer
+        active:scale-95
+        active:bg-gray-100
+        transform
+        transition
+        duration-100
+        ease-out
+         hover:shadow-lg
+    }
+}

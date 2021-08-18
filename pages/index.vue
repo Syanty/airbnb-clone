@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Banner />
+    <Banner :view="view"/>
     <main class="max-w-7xl mx-auto px-8 sm:px-16" v-if="!$fetchState.pending">
       <section class="pt-6">
         <h2 class="text-4xl font-semibold pb-5">Explore Nearby</h2>
@@ -43,6 +43,9 @@
 export default {
   data() {
     return {
+       view: {
+        atTopOfPage: true,
+      },
       exploreData: [],
       liveData: [],
       largeCardItem: {
@@ -53,6 +56,18 @@ export default {
         img: '4cj',
       },
     }
+  },
+  beforeMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  methods: {
+    handleScroll() {
+      if (window.pageYOffset > 0) {
+        this.view.atTopOfPage = false
+      } else {
+        this.view.atTopOfPage = true
+      }
+    },
   },
   async fetch() {
     this.exploreData = await this.$axios.get(`/pyp`).then((res) => {
