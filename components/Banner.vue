@@ -47,10 +47,10 @@
     </div>
     <img src="/banner.jpg" class="w-full h-full object-cover" />
     <div class="absolute top-1/2 w-full transform -translate-y-1/2 text-center">
-      <p class="text-sm sm:text-lg">Not sure where to go? Perfect.</p>
+      <p class="text-sm sm:text-lg text-white">Not sure where to go? Perfect.</p>
       <button
         class="
-          text-purple-500
+          text-red-600
           bg-white
           px-10
           py-4

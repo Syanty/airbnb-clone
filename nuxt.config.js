@@ -45,8 +45,8 @@ export default {
   ],
 
   env: {
-    GEOAPIFY_KEY:process.env.geoapify,
-    MAPBOX_KEY: process.env.mapbox
+    NUXT_ENV_GEOAPIFY_KEY:process.env.geoapify,
+    NUXT_ENV_MAPBOX_KEY: process.env.mapbox
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {

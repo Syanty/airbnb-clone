@@ -311,7 +311,7 @@ export default {
       /* hitting autocomplete api  */
       this.$axios
         .get(
-          `https://api.geoapify.com/v1/geocode/autocomplete?text=${this.searchInput}&lang=en&apiKey=${process.env.GEOAPIFY_KEY}`
+          `https://api.geoapify.com/v1/geocode/autocomplete?text=${this.searchInput}&lang=en&apiKey=${process.env.NUXT_ENV_GEOAPIFY_KEY}`
         )
         .then((res) => {
           this.autoCompleteResults = res.data.features
