@@ -33,7 +33,7 @@ export default {
     return {
       mapStyle: 'mapbox://styles/iamsanty/ckshgam0l7ufl17rzfjwjwooo',
       coordinates: [],
-      access_token: process.env.mapbox_key,
+      access_token: process.env.MAPBOX_KEY,
       center: [],
       selectedLocation: {},
     }

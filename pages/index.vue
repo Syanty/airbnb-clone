@@ -104,7 +104,7 @@ export default {
 
       this.exploreData = await this.$axios
         .get(
-          `https://api.geoapify.com/v2/places?categories=accommodation&filter=circle:${longitude},${latitude},5000&bias=proximity:${longitude},${latitude}&lang=en&limit=10&apiKey=${process.env.geoapify_key}`
+          `https://api.geoapify.com/v2/places?categories=accommodation&filter=circle:${longitude},${latitude},5000&bias=proximity:${longitude},${latitude}&lang=en&limit=10&apiKey=${process.env.GEOAPIFY_KEY}`
         )
         .then((res) => {
           return res.data.features

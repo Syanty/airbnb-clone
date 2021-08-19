@@ -76,7 +76,7 @@ export default {
   async fetch() {
     this.searchResult = await this.$axios
       .get(
-        `https://api.geoapify.com/v2/places?categories=${this.categories}&filter=circle:${this.longitude},${this.latitude},${this.radius}&bias=proximity:${this.longitude},${this.latitude}&lang=en&limit=20&apiKey=${process.env.geoapify_key}`
+        `https://api.geoapify.com/v2/places?categories=${this.categories}&filter=circle:${this.longitude},${this.latitude},${this.radius}&bias=proximity:${this.longitude},${this.latitude}&lang=en&limit=20&apiKey=${process.env.GEOAPIFY_KEY}`
       )
       .then((res) => {
         return res.data.features
