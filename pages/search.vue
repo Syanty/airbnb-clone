@@ -30,8 +30,8 @@
         ></card-info>
       </div>
     </section>
-    <section class="hidden xl:inline-flex xl:min-w-[500px]">
-      <Map :searchResult="searchResult"/>
+    <section v-if="searchResult.length > 0" class="hidden xl:inline-flex xl:min-w-[500px] py-5">
+      <Map :searchResult="searchResult" />
     </section>
   </main>
 </template>
@@ -45,7 +45,12 @@ export default {
       endDate: '',
       noOfGuests: 0,
       range: '',
+      latitude: '',
+      longitude: '',
       searchResult: [],
+      categories:"accommodation",
+      radius: 5000,
+
     }
   },
   created() {
@@ -53,11 +58,14 @@ export default {
   },
   methods: {
     computeQuery() {
-      const { location, startDate, endDate, noOfGuests } = this.$route.query
+      const { location, startDate, endDate, noOfGuests, latitude, longitude } =
+        this.$route.query
       this.location = location
       this.startDate = startDate
       this.endDate = endDate
       this.noOfGuests = noOfGuests
+      this.latitude = latitude
+      this.longitude = longitude
 
       const formatedStartDate = format(new Date(startDate), 'dd MMMM yy')
       const formatedEndDate = format(new Date(endDate), 'dd MMMM yy')
@@ -66,9 +74,13 @@ export default {
     },
   },
   async fetch() {
-    this.searchResult = await this.$axios.get('/isz').then((res) => {
-      return res.data
-    })
+    this.searchResult = await this.$axios
+      .get(
+        `https://api.geoapify.com/v2/places?categories=${this.categories}&filter=circle:${this.longitude},${this.latitude},${this.radius}&bias=proximity:${this.longitude},${this.latitude}&lang=en&limit=20&apiKey=${process.env.geoapify_key}`
+      )
+      .then((res) => {
+        return res.data.features
+      })
   },
 }
 </script>

@@ -2,7 +2,7 @@
   <section class="relative py-16 cursor-pointer">
     <div class="relative h-96 min-w-[300px]">
       <img
-        :src="`https://links.papareact.com/${largeCardItem.img}`"
+        :src="`${largeCardItem.img}`"
         class="rounded-2xl h-full w-full object-cover"
       />
     </div>

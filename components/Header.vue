@@ -1,7 +1,7 @@
 <template>
   <header
     :class="{ scrolled: !view.atTopOfPage }"
-    class="fixed top-0 z-50 w-full grid grid-cols-3 p-5 md:px-10 text-gray-500"
+    class="fixed top-0 z-50 w-full grid grid-cols-3 p-5 md:px-10 text-gray-900"
   >
     <!-- left -->
     <div
@@ -9,7 +9,7 @@
       @click="$router.push('/')"
     >
       <img
-        src="https://links.papareact.com/qd3"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/2560px-Airbnb_Logo_B%C3%A9lo.svg.png"
         class="h-full object-contain"
       />
     </div>
@@ -31,10 +31,11 @@
       <input
         type="text"
         v-model="searchInput"
-        @input="$refs.picker.togglePicker(true)"
+        @input="autoComplete"
         :placeholder="placeholder"
         class="
           pl-5
+          h-full
           bg-transparent
           text-sm text-gray-600
           font-medium
@@ -70,6 +71,39 @@
           clip-rule="evenodd"
         />
       </svg>
+    </div>
+    <div
+      :class="!view.atTopOfPage ? 'flex' : 'hidden'"
+      v-if="autoCompleteOpen && searchInput"
+      class="
+        bg-gray-100
+        absolute
+        top-20
+        w-96
+        rounded-lg
+        z-50
+        py-5
+        left-1/2
+        transform
+        -translate-x-1/2
+      "
+    >
+      <ul class="leading-10 w-full">
+        <li
+          class="hover:bg-gray-300 cursor-pointer py-1 px-2"
+          v-for="item in autoCompleteResults"
+          :key="item.name"
+          @click="
+            selectLocation(
+              item.properties.formatted,
+              item.properties.lat,
+              item.properties.lon
+            )
+          "
+        >
+          {{ item.properties.formatted }}
+        </li>
+      </ul>
     </div>
 
     <!-- on normal form -->
@@ -161,12 +195,19 @@
       :class="!view.atTopOfPage ? 'visible' : 'hidden'"
       class="col-span-3 flex flex-col mx-auto"
     >
-      <no-ssr>
+      <client-only>
         <date-range-picker
           v-model="dateRange"
           :min-date="new Date()"
+          opens="inline"
           ref="picker"
         >
+          <!--    input slot (new slot syntax)-->
+          <template #input="picker">
+            <p class="text-center">
+              {{ picker.startDate | date }} - {{ picker.endDate | date }}
+            </p>
+          </template>
           <!--    date slot-->
           <template #date="data">
             <span class="small">{{ data.date | dateCell }}</span>
@@ -214,13 +255,18 @@
               <button @click="searchInput = ''" class="flex-grow text-gray-500">
                 Cancel
               </button>
-              <button class="flex-grow text-red-400" @click="search">
+              <button
+                :class="proceed ? '' : ' cursor-not-allowed'"
+                :disabled="!proceed"
+                class="flex-grow text-red-400"
+                @click="search"
+              >
                 Search
               </button>
             </div>
           </div>
         </date-range-picker>
-      </no-ssr>
+      </client-only>
     </div>
   </header>
 </template>
@@ -242,6 +288,10 @@ export default {
       dateRange: { startDate, endDate },
       searchInput: '',
       noOfGuests: 1,
+      autoCompleteResults: [],
+      autoCompleteOpen: false,
+      coords: {},
+      proceed: false,
     }
   },
   filters: {
@@ -255,13 +305,40 @@ export default {
     },
   },
   methods: {
+    autoComplete() {
+      this.$refs.picker.togglePicker(true)
+
+      /* hitting autocomplete api  */
+      this.$axios
+        .get(
+          `https://api.geoapify.com/v1/geocode/autocomplete?text=${this.searchInput}&lang=en&apiKey=${process.env.geoapify_key}`
+        )
+        .then((res) => {
+          this.autoCompleteResults = res.data.features
+        })
+
+      if (this.autoCompleteResults.length !== 0) {
+        this.autoCompleteOpen = true
+        this.proceed = false
+      }
+    },
+
+    selectLocation(formattedName, latitude, longitude) {
+      this.proceed = true
+      this.searchInput = formattedName
+      this.autoCompleteOpen = false
+
+      this.coords = { latitude, longitude }
+    },
     search() {
-      const searchQuery = {
+      let searchQuery = {
         location: this.searchInput,
         startDate: this.dateRange.startDate.toISOString(),
         endDate: this.dateRange.endDate.toISOString(),
         noOfGuests: this.noOfGuests,
       }
+
+      searchQuery = Object.assign(searchQuery, this.coords)
 
       const formatedStartDate = format(
         new Date(searchQuery.startDate),

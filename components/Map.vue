@@ -1,5 +1,5 @@
 <template>
-  <no-ssr>
+  <client-only>
     <MglMap
       :accessToken="access_token"
       :mapStyle.sync="mapStyle"
@@ -8,22 +8,22 @@
       :offset="[-20, -10]"
       color="#ef4444"
     >
-      <div v-for="coord in searchResult" :key="coord.title">
-        <MglMarker :coordinates="[coord.long, coord.lat]">
+      <div v-for="coord in searchResult" :key="coord.name">
+        <MglMarker :coordinates="[coord.properties.lon, coord.properties.lat]">
           <p
             slot="marker"
             class="cursor-pointer text-2xl"
-            @click="selectedLocation = coord"
+            @click="selectedLocation = coord.properties"
           >
             📌
           </p>
           <MglPopup :closeButton="false">
-            {{ coord.title }}
+            {{ coord.properties.name || coord.properties.formatted }}
           </MglPopup>
         </MglMarker>
       </div>
     </MglMap>
-  </no-ssr>
+  </client-only>
 </template>
 <script>
 import getcenter from 'geolib/es/getCenter'
@@ -48,8 +48,8 @@ export default {
       // object
 
       this.coordinates = this.searchResult.map((result) => ({
-        longitude: result.long,
-        latitude: result.lat,
+        longitude: result.properties.lon,
+        latitude: result.properties.lat,
       }))
 
       // latitude and longitude of the center of location coordinates

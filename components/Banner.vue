@@ -12,7 +12,7 @@
   >
     <div
       :class="view.atTopOfPage ? 'invisible md:visible' : 'hidden'"
-      class="absolute flex flex-col top-24 w-full"
+      class="absolute z-40 flex flex-col top-24 w-full"
     >
       <div
         :class="view.atTopOfPage ? ' lg:hidden flex' : 'hidden'"
@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <img src="https://links.papareact.com/0fm" class="w-full object-cover" />
+    <img src="/banner.jpg" class="w-full h-full object-cover" />
     <div class="absolute top-1/2 w-full transform -translate-y-1/2 text-center">
       <p class="text-sm sm:text-lg">Not sure where to go? Perfect.</p>
       <button

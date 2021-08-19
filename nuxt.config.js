@@ -45,11 +45,11 @@ export default {
   ],
 
   env: {
-    mapbox_key: "pk.eyJ1IjoiaWFtc2FudHkiLCJhIjoiY2tzaGcydWo2MXRzbTJ2b2Q4ZXZnaTg5ayJ9.Q4UAWGgMINrgBnqxHWvbKg"
+    geoapify_key:process.env.geoapify,
+    mapbox_key: process.env.mapbox
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: "https://links.papareact.com"
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
